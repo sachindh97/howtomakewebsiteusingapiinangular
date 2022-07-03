@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 // call apiservices 
 import {ApiservicesService} from '../apiservices.service';
+import { NgxSpinnerService } from "ngx-spinner";
+
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -8,7 +10,7 @@ import {ApiservicesService} from '../apiservices.service';
 })
 export class HomeComponent implements OnInit {
 
-  constructor(private service:ApiservicesService) { }
+  constructor(private service:ApiservicesService,private spinner:NgxSpinnerService) { }
 
   categoryList:any = ['all','hosting','ecommerce','finance','course','product','travel'];
   showAllData:any=[];
@@ -22,12 +24,14 @@ export class HomeComponent implements OnInit {
 
   homeData()
   {
+      this.spinner.show();
       this.service.homeapi().subscribe((result)=>{
         console.log(result,'result#');
         if(result.length>0)
         {
             this.showAllData = result;
             this.showData = true;
+            this.spinner.hide();
         }
         
       });
